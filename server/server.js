@@ -11,9 +11,13 @@ app.use(bodyParser.json())
 app.use(cors())
 
 app.listen(3000, () => {
-    console.log('App started on port 3000')
+  console.log('App started on port 3000!!')
+})
+
+app.get('/api/test', (req, res) => {
+  console.log('got')
+  res.json({ message: 'ok' })
 })
 app.get('*', (req, res) => {
-    console.log(req.params);
-    res.sendFile(path.resolve('static/index.html'))
+  res.sendFile(path.resolve('static/index.html'))
 })

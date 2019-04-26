@@ -1,18 +1,25 @@
-# this is is a MERN stack boilerplate 
+# this is is a full-stack JS boilerplate
+
+## with React & expressJS
 
 ### HMR enabled
+
 ### webpack configured
-### initial setup with Matrial UI
+
 clone the repository and run
+
 ```bash
-    npm install
-    npm run compile
-    npm run compile-server
-    npm start
+    npm run dev
 ```
-next time then
+
+or run
+
 ```bash
-    npm run start
-    npm run watch
-    npm run watch-server
+npm run client
+npm run server
 ```
+
+in two terminals to watch separately client and server changes.
+
+webpack dev Server @port 8888
+express serves @port 3000

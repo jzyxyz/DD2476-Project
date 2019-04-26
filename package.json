@@ -1,44 +1,41 @@
 {
-  "name": "The Name",
+  "name": "nameof",
   "version": "1.0.0",
   "description": "The discription",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "webpack",
-    "compile-server": "babel server --presets es2015 --out-dir dist --source-maps",
-    "watch": "webpack-dev-server --hot --inline",
-    "start": "nodemon -w dist dist/server.js",
-    "watch-server": "babel server --presets es2015 --out-dir dist --source-maps --watch"
+    "build": "webpack --mode production",
+    "client": "webpack-dev-server --hot --inline --devtool inline-source-map ",
+    "server": "nodemon",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Zhongyuan Jin <nanomalloc@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-loader": "^7.1.5",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "eslint": "^5.13.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-react": "^7.12.4",
+    "babel-loader": "^8.0.0",
     "html-webpack-plugin": "^3.2.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "concurrently": "^4.0.0",
     "nodemon": "^1.18.10",
     "react": "^16.8.3",
     "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.1.14",
-    "whatwg-fetch": "^3.0.0"
+    "whatwg-fetch": "^3.0.0",
+    "style-loader": "^0.23.0",
+    "css-loader": "^2.0.0"
   },
   "dependencies": {
-    "@material-ui/core": "^3.9.2",
     "express": "^4.16.4",
+    "webpack-node-externals": "1.7.2",
     "cors": "^2.8.5",
     "lodash": "^4.17.11",
-    "mongodb": "^3.1.13",
     "react-dom": "^16.8.1",
-    "react-router-dom": "^4.3.1",
     "source-map-support": "^0.5.10",
+    "react-router-dom": "^5.0.0",
     "babel-polyfill": "^6.26.0"
   }
 }
