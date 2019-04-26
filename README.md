@@ -2,9 +2,10 @@
 
 ## with React & expressJS
 
-### HMR enabled
-
-### webpack configured
+- HMR enabled
+- webpack configured
+- ES6 import & export at backend
+- up to date babel-loader
 
 clone the repository and run
 
