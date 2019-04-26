@@ -2,8 +2,9 @@ const webpack = require('webpack') // eslint-disable-line
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 
-const outputDirectory = '/static'
-const entries = ['babel-polyfill', './client/index.js']
+const outputDirectory = path.join(__dirname, 'static')
+const indexpath = path.join(__dirname, 'client', 'index.js')
+const entries = ['babel-polyfill', indexpath]
 
 module.exports = {
   entry: entries,
