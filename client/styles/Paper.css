@@ -1,0 +1,7 @@
+.text-container {
+  margin: auto;
+  padding: 0 15%;
+  font-family: 'Merriweather', serif;
+  letter-spacing: 0.25px;
+  line-height: 140%;
+}

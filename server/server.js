@@ -15,8 +15,8 @@ app.listen(3000, () => {
 })
 
 app.get('/api/test', (req, res) => {
-  console.log('got')
-  res.json({ message: 'ok' })
+  console.log('got it')
+  res.json({ message: 'oj8k!!' })
 })
 app.get('*', (req, res) => {
   res.sendFile(path.resolve('static/index.html'))

@@ -2,7 +2,7 @@ const webpack = require('webpack') // eslint-disable-line
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 
-const outputDirectory = 'static'
+const outputDirectory = '/static'
 const entries = ['babel-polyfill', './client/index.js']
 
 module.exports = {
@@ -11,6 +11,7 @@ module.exports = {
     path: path.join(__dirname, outputDirectory),
     filename: '[name].bundle.js',
     chunkFilename: '[name].js',
+    publicPath: '/',
   },
   devtool: 'source-map',
   devServer: {
@@ -62,7 +63,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './client/index.html',
+      template: path.join(__dirname, 'client', 'index.html'),
     }),
   ],
 }
