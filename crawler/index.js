@@ -10,12 +10,14 @@ const c = new Crawler({
       console.log(error)
     } else {
       const { $ } = res
+      // put the css-selector of title here
       const title = $('div.story-body > h1.story-body__h1').text()
       // console.log(title)
       if (/^\s+$/.test(title)) {
         return
       }
-      // const digest = $('div.story-body__inner > p.story-body__introduction').text()
+
+      // put the css-selector of new body paragraphs here
       const txt = $('div.story-body__inner > p')
         .map(function(i, el) {
           return $(this).text()
@@ -24,6 +26,7 @@ const c = new Crawler({
         .join('\n')
       // console.log(txt)
 
+      //put the css-selector of links to other news here
       $('a.story-body__link').each(function(i, el) {
         let href = el.attribs.href
         // console.log(href)
@@ -51,7 +54,10 @@ const c = new Crawler({
     }
   },
 })
+
 c.on('drain', function() {
   console.log('crawling is done')
 })
+
+// init with a news link
 c.queue('https://www.bbc.com/news/technology-48103617')
