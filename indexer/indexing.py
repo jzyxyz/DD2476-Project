@@ -41,9 +41,9 @@ for i in range(1,4) :
         
         for j in range(dataset.shape[0]) :
             try:
-                dataset.at[j, "date"] = datetime.strptime(dataset.iloc[j].date, '%Y-%m-%d')
+                dataset.at[j, "date"] = datetime.strptime(dataset.iloc[j].date, '%Y-%m-%d').strftime('%Y-%m-%d')
             except ValueError:
-                dataset.at[j, "date"] = datetime.strptime(dataset.iloc[j].date, '%Y/%m/%d')
+                dataset.at[j, "date"] = datetime.strptime(dataset.iloc[j].date, '%Y/%m/%d').strftime('%Y-%m-%d')
             except TypeError :
                 continue
             json_file.append(dataset.iloc[j].to_json())
