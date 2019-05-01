@@ -5,7 +5,7 @@ const path = require('path')
 const DATA_DIR = path.resolve('../crawled_data')
 
 const writeData = json => {
-  filePath = path.join(DATA_DIR, `${json.title.replace(/\s+/g, '-')}.txt`)
+  filePath = path.join(DATA_DIR, `${json.title.replace(/\s+/g, '-')}.json`)
   fs.writeFile(filePath, JSON.stringify(json), function(err) {
     if (err) {
       return console.log(err)

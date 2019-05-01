@@ -1,42 +1,46 @@
 ## dd2476 project
 
+## project structure
+
+.
+├── client
+├── crawled_data
+├── crawler
+├── data
+├── dist
+├── indexer
+├── node_modules
+└── server
+
 ### adding dependencies
 
 if you add any dependecies in python,
-write it in `requirements.txt`
+write it in `requirements.txt`.
 if you add any dependecies in nodejs
-ues `npm install --save $packagename`
+use `npm install --save $packagename`.
+
 this makes everyone's life easier
+
+### installing dependencies
+
 to install dependencies, run
 `npm install`
 or
 `pip3 install -r requirements.txt`
 
+### frontend
+
 clone the repository and run
 npm @v5
 node @v10
 
-```bash
-    npm install
-```
-
 and then run
 
 ```bash
-    npm run dev
-```
-
-or
-
-```bash
 npm run client
-npm run server
 ```
-
-in two terminals to watch separately client and server changes.
 
 webpack devServer @port 8888
-express serves @port 3000
 
 ### crawl the data
 

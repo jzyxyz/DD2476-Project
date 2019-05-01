@@ -31,30 +31,35 @@ es.indices.delete(index = 'news_1')
 es.indices.delete(index = 'news_2')
 es.indices.delete(index = 'news_3')
 """
-   
-for i in range(1,4) : 
-    if not es.indices.exists(index = 'news_' + str(i)) :
-    
-        dataset = pd.read_csv('articles' + str(i) + '.csv', encoding = 'utf8').drop(columns = {"Unnamed: 0"})
-        
+
+for i in range(1, 4):
+    if not es.indices.exists(index='news_' + str(i)):
+
+        dataset = pd.read_csv('../data/articles' + str(i) +
+                              '.csv', encoding='utf8').drop(columns={"Unnamed: 0"})
+
         json_file = []
-        
-        for j in range(dataset.shape[0]) :
+
+        for j in range(dataset.shape[0]):
             try:
-                dataset.at[j, "date"] = datetime.strptime(dataset.iloc[j].date, '%Y-%m-%d').strftime('%Y-%m-%d')
+                dataset.at[j, "date"] = datetime.strptime(
+                    dataset.iloc[j].date, '%Y-%m-%d').strftime('%Y-%m-%d')
             except ValueError:
-                dataset.at[j, "date"] = datetime.strptime(dataset.iloc[j].date, '%Y/%m/%d').strftime('%Y-%m-%d')
-            except TypeError :
+                dataset.at[j, "date"] = datetime.strptime(
+                    dataset.iloc[j].date, '%Y/%m/%d').strftime('%Y-%m-%d')
+            except TypeError:
                 continue
             json_file.append(dataset.iloc[j].to_json())
-        
-        helpers.bulk(es, json_file, index = 'news_' + str(i), doc_type ='news_articles')
-        
+
+        helpers.bulk(es, json_file, index='news_' +
+                     str(i), doc_type='news_articles')
+
         fin = time.time()
-        
+
         print('duree : ', fin - debut)
-  
-res = es.search(index = "news_1", body={"query": {"match" : { "title" : "Mixtape" }}})
+
+res = es.search(index="news_1", body={
+                "query": {"match": {"title": "Mixtape"}}})
 print("Got %d Hits" % res['hits']['total']['value'])
 
 """
