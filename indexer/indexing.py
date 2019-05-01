@@ -9,8 +9,6 @@ import pandas as pd
 import time
 from datetime import datetime
 
-debut = time.time()
-
 es = Elasticsearch()
 
 # ignore 400 cause by IndexAlreadyExistsException when creating an index
@@ -36,6 +34,8 @@ es.indices.delete(index = 'news_3')
 for i in range(1, 4):
     if not es.indices.exists(index='news_' + str(i)):
 
+        start = time.time()
+
         dataset = pd.read_csv('../data/articles' + str(i) +
                               '.csv', encoding='utf8').drop(columns={"Unnamed: 0"})
 
@@ -57,7 +57,7 @@ for i in range(1, 4):
 
         fin = time.time()
 
-        print('duree : ', fin - debut)
+        print('duree : ', fin - start)
         
 # example of a query : 
 res = es.search(index="news_1", body={
