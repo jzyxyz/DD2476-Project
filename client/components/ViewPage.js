@@ -2,25 +2,15 @@ import React, { useState, useEffect } from 'react'
 import Paper from './Paper'
 import test_text from './text'
 import Loading from './Loading'
-import Rate from './Rate'
 
-const ViewPage = ({ trackLiked, trackDisliked }) => {
+const ViewPage = props => {
   const [text, setText] = useState(test_text)
   // useEffect(() => )
+  const { history, loading } = props
   return (
-    <div className='App'>
-      <div>
-        <Rate
-          handleRating={isLiked => event => {
-            if (isLiked) {
-              trackLiked(1)
-            } else {
-              trackDisliked(1)
-            }
-          }}
-        />
-        <Paper text={text} />
-      </div>
+    <div className='view-page'>
+      <button onClick={history.goBack}>Go Back</button>
+      <Paper text={text} />
     </div>
   )
 }

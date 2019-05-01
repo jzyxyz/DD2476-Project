@@ -1,17 +1,29 @@
 import React from 'react'
 import '../styles/SearchResults.css'
+import Rate from './Rate'
 import { Link } from 'react-router-dom'
 
 const ResultItem = ({ title, digest, id }) => (
-  <Link to={`/news/${id}`}>
-    <li>
+  <li>
+    <Link to={`/news/${id}`}>
       <h2>{title}</h2>
-      <h4>{digest}</h4>
-    </li>
-  </Link>
+    </Link>
+    <h4>{digest}</h4>
+    <Rate
+      handleRating={isLiked => event => {
+        if (isLiked) {
+          trackLiked(1)
+          console.log('like')
+        } else {
+          trackDisliked(1)
+          console.log('hate')
+        }
+      }}
+    />
+  </li>
 )
 
-const SearchResults = ({ results }) => {
+const SearchResults = ({ results, trackLiked, trackDisliked }) => {
   return (
     <div className='results-container'>
       <ul className='results-list'>

@@ -47,33 +47,33 @@ class App extends Component {
 
   render() {
     const { query, loading, results } = this.state
-    const routing = (
-      <Switch>
-        <Route
-          path='/search'
-          render={props => <SearchResult {...props} results={results} toggleLoading={this.toggleLoading} />}
-        />
-        <Route
-          path='/news/docId'
-          render={props => (
-            <ViewPage
-              {...props}
-              trackLiked={this.trackLiked}
-              trackDisliked={this.trackDisliked}
-              toggleLoading={this.toggleLoading}
-            />
-          )}
-        />
-      </Switch>
-    )
+
     return (
       <BrowserRouter>
-        <SearchBox
-          query={query}
-          handleInputChange={this.handleInputChange}
-          handleSearchAction={this.handleSearchAction}
-        />
-        {loading ? <Loading /> : routing}
+        <div className='app'>
+          <Switch>
+            <Route
+              path='/search'
+              render={props => (
+                <div className='searchpage-container'>
+                  <SearchBox
+                    query={query}
+                    handleInputChange={this.handleInputChange}
+                    handleSearchAction={this.handleSearchAction}
+                  />
+                  <SearchResult
+                    {...props}
+                    trackLiked={this.trackLiked}
+                    trackDisliked={this.trackDisliked}
+                    results={results}
+                    toggleLoading={this.toggleLoading}
+                  />
+                </div>
+              )}
+            />
+            <Route path='/news/:docId' render={props => <ViewPage {...props} toggleLoading={this.toggleLoading} />} />
+          </Switch>
+        </div>
       </BrowserRouter>
     )
   }
