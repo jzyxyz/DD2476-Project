@@ -9,10 +9,10 @@ const entries = ['babel-polyfill', indexpath]
 module.exports = {
   entry: entries,
   output: {
-    path: path.join(__dirname, outputDirectory),
+    path: outputDirectory,
     filename: '[name].bundle.js',
     chunkFilename: '[name].js',
-    publicPath: '/',
+    publicPath: '',
   },
   devtool: 'source-map',
   devServer: {
