@@ -1,24 +1,19 @@
-## dd2476 project
+### project structure
 
-## project structure
-
-.
-├── client
-├── crawled_data
-├── crawler
-├── data
-├── dist
-├── indexer
-├── node_modules
+.  
+├── client  
+├── crawled_data  
+├── crawler  
+├── data  
+├── dist  
+├── indexer  
+├── node_modules  
 └── server
 
 ### adding dependencies
 
-if you add any dependecies in python,
-write it in `requirements.txt`.
-if you add any dependecies in nodejs
-use `npm install --save $packagename`.
-
+if you add any dependecies in python, write it in `requirements.txt`.  
+if you add any dependecies in nodejs, use `npm install --save $packagename`.  
 this makes everyone's life easier
 
 ### installing dependencies
