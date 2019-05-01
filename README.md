@@ -46,3 +46,14 @@ node index.js
 ```
 
 read the comments in `index.js` file
+
+
+
+
+### index the datasets 
+
+download the csv files from https://www.dropbox.com/s/90goxt56pfz0r35/all-the-news.zip?dl=0
+run indexing.py to create 3 indeces news_1, news_2 and news_3 
+
+visualization & simple query experiments : kibana or elasticsearch-head chrome extension
+
