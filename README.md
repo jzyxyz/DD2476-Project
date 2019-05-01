@@ -1,5 +1,17 @@
 ## dd2476 project
 
+### adding dependencies
+
+if you add any dependecies in python,
+write it in `requirements.txt`
+if you add any dependecies in nodejs
+ues `npm install --save $packagename`
+this makes everyone's life easier
+to install dependencies, run
+`npm install`
+or
+`pip3 install -r requirements.txt`
+
 clone the repository and run
 npm @v5
 node @v10

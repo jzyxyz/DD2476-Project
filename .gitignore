@@ -2,3 +2,5 @@ node_modules/*
 static/
 dist/
 data/
+crawled_data/
+crawler/node_modules
