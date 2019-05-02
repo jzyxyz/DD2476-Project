@@ -3,6 +3,7 @@ import cors from 'cors'
 import express from 'express'
 import bodyParser from 'body-parser'
 import path from 'path'
+import fetch from 'node-fetch'
 
 SourceMapSupport.install()
 const app = express()
@@ -17,6 +18,26 @@ app.listen(3000, () => {
 app.get('/api/test', (req, res) => {
   console.log('got it')
   res.json({ message: 'oj8k!!' })
+})
+
+app.post('/api/search', (req, res) => {
+  console.log(req.body)
+  fetch('http://localhost:9200/news_1/_search?q=content:new%20york')
+    .then(queryRes => {
+      if (!queryRes.ok) {
+        return queryRes.json().then(({ error }) => {
+          throw Error(`${error}`)
+        })
+      }
+      return queryRes.json()
+    })
+    .then(queryResults => {
+      res.json(queryResults)
+    })
+    .catch(error => {
+      console.log(error.stack)
+      res.status(500).json({ error: { message: 'internal server error' } })
+    })
 })
 
 app.get('*', (req, res) => {

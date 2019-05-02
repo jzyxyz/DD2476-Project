@@ -29,13 +29,14 @@
     "css-loader": "^2.0.0"
   },
   "dependencies": {
-    "express": "^4.16.4",
-    "webpack-node-externals": "1.7.2",
+    "babel-polyfill": "^6.26.0",
     "cors": "^2.8.5",
+    "express": "^4.16.4",
     "lodash": "^4.17.11",
+    "node-fetch": "^2.5.0",
     "react-dom": "^16.8.1",
-    "source-map-support": "^0.5.10",
     "react-router-dom": "^5.0.0",
-    "babel-polyfill": "^6.26.0"
+    "source-map-support": "^0.5.10",
+    "webpack-node-externals": "1.7.2"
   }
 }
