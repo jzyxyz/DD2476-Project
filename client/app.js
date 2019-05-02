@@ -55,7 +55,7 @@ class App extends Component {
           this.setState({ results: hits, loading: false })
         })
         .catch(error => {
-          alert(error)
+          alert(error.message)
         })
       // this.setState({ results: test_reulsts })
     }

@@ -22,7 +22,10 @@ app.get('/api/test', (req, res) => {
 
 app.post('/api/search', (req, res) => {
   console.log(req.body)
-  fetch('http://localhost:9200/news_1/_search?q=content:new%20york')
+  const { query } = req.body
+  const encoded = query.replace(' ', '%20')
+
+  fetch(`http://localhost:9200/news_1/_search?q=title:${encoded}`)
     .then(queryRes => {
       if (!queryRes.ok) {
         return queryRes.json().then(({ error }) => {
