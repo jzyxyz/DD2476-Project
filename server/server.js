@@ -25,6 +25,11 @@ app.post('/api/search', (req, res) => {
   const { query } = req.body
   const encoded = query.replace(' ', '%20')
 
+  /*
+  process the data from frontend here
+  call python scripts here
+  */
+
   fetch(`http://localhost:9200/news_1/_search?q=title:${encoded}`)
     .then(queryRes => {
       if (!queryRes.ok) {

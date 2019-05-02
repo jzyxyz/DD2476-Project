@@ -92,6 +92,7 @@ class App extends Component {
                   handleInputChange={this.handleInputChange}
                   handleSearchAction={this.handleSearchAction}
                 />
+                <button onClick={() => this.setState({ liked: [], disliked: [] })}> clear tracking history</button>
                 {loading ? (
                   <Loading />
                 ) : (
