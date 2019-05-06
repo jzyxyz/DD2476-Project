@@ -1,14 +1,30 @@
 import React, { useState, useEffect } from 'react'
-import Paper from './Paper'
+import IconButton from '@material-ui/core/IconButton'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import Typography from '@material-ui/core/Typography'
+import Paper from '@material-ui/core/Paper'
+import { withStyles } from '@material-ui/core/styles'
+
+const styles = theme => ({
+  root: {
+    ...theme.mixins.gutters(),
+    margin: 20,
+    padding: 30,
+  },
+})
 
 const ViewPage = props => {
-  const { history } = props
+  const { history, classes } = props
   return (
     <div className='view-page'>
-      <button onClick={history.goBack}>Go Back</button>
-      <Paper text={props.hit._source.content} />
+      <IconButton onClick={history.goBack}>
+        <ArrowBackIcon />
+      </IconButton>
+      <Paper className={classes.root}>
+        <Typography component='p'>{props.hit._source.content}</Typography>
+      </Paper>
     </div>
   )
 }
 
-export default ViewPage
+export default withStyles(styles)(ViewPage)

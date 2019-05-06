@@ -1,9 +1,15 @@
 import React, { Component } from 'react'
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
 import ViewPage from './components/ViewPage'
-import SearchBox from './components/Search'
+import SearchInput from './components/SearchInput'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import THEME from './styles/theme'
 import SearchResult from './components/SearchResults'
 import Loading from './components/Loading'
+import Grid from '@material-ui/core/Grid'
+import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
+import HistoryIcon from '@material-ui/icons/History'
 
 const responseHandler = response => {
   const { statusText, ok } = response
@@ -14,6 +20,8 @@ const responseHandler = response => {
   }
   return response.json()
 }
+
+const theme = createMuiTheme(THEME)
 
 class App extends Component {
   constructor(props) {
@@ -26,6 +34,7 @@ class App extends Component {
       results: [],
     }
     this.trackLiked = this.trackLiked.bind(this)
+    this.trackDisliked = this.trackDisliked.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleSearchAction = this.handleSearchAction.bind(this)
   }
@@ -66,7 +75,12 @@ class App extends Component {
   }
 
   trackDisliked = docId => {
-    this.setState({ disliked: this.state.disliked.concat(docId) })
+    const hits = this.state.results.hits.slice()
+    const filtered = hits.filter(h => h._id != docId)
+    this.setState({
+      disliked: this.state.disliked.concat(docId),
+      results: { hits: filtered },
+    })
   }
 
   toggleLoading() {
@@ -82,42 +96,54 @@ class App extends Component {
 
     return (
       <BrowserRouter>
-        <Switch>
-          <Route
-            path='/search'
-            render={props => (
-              <div className='searchpage-container'>
-                <SearchBox
-                  query={query}
-                  handleInputChange={this.handleInputChange}
-                  handleSearchAction={this.handleSearchAction}
+        <MuiThemeProvider theme={theme}>
+          <Switch>
+            <Route
+              path='/search'
+              render={props => (
+                <Grid container direction='column'>
+                  <Grid item xs={12}>
+                    <SearchInput
+                      query={query}
+                      handleInputChange={this.handleInputChange}
+                      handleSearchAction={this.handleSearchAction}
+                    />
+                  </Grid>
+                  <Grid item xs={12} style={{ marginTop: 16 }}>
+                    <Button
+                      variant='contained'
+                      color='primary'
+                      onClick={() => this.setState({ liked: [], disliked: [] })}
+                    >
+                      <HistoryIcon /> {'clear tracking history'}
+                    </Button>
+                  </Grid>
+                  {loading ? (
+                    <Loading />
+                  ) : (
+                    <SearchResult
+                      {...props}
+                      trackLiked={this.trackLiked}
+                      trackDisliked={this.trackDisliked}
+                      hits={hits}
+                      toggleLoading={this.toggleLoading}
+                    />
+                  )}
+                </Grid>
+              )}
+            />
+            <Route
+              path='/news/:docId'
+              render={props => (
+                <ViewPage
+                  {...props}
+                  toggleLoading={this.toggleLoading}
+                  hit={hits.find(h => h._id == props.match.params.docId)}
                 />
-                <button onClick={() => this.setState({ liked: [], disliked: [] })}> clear tracking history</button>
-                {loading ? (
-                  <Loading />
-                ) : (
-                  <SearchResult
-                    {...props}
-                    trackLiked={this.trackLiked}
-                    trackDisliked={this.trackDisliked}
-                    hits={hits}
-                    toggleLoading={this.toggleLoading}
-                  />
-                )}
-              </div>
-            )}
-          />
-          <Route
-            path='/news/:docId'
-            render={props => (
-              <ViewPage
-                {...props}
-                toggleLoading={this.toggleLoading}
-                hit={hits.find(h => h._id == props.match.params.docId)}
-              />
-            )}
-          />
-        </Switch>
+              )}
+            />
+          </Switch>
+        </MuiThemeProvider>
       </BrowserRouter>
     )
   }

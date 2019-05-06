@@ -1,52 +1,48 @@
 import React from 'react'
-import '../styles/SearchResults.css'
-import Rate from './Rate'
-import { Link } from 'react-router-dom'
+import Grid from '@material-ui/core/Grid'
+import { withStyles } from '@material-ui/core/styles'
+import Card from './ResultItem'
 
-const ResultItem = ({ title, digest, id, trackDisliked, trackLiked }) => (
-  <li>
-    <Link to={`/news/${id}`}>
-      <h2>{title}</h2>
-    </Link>
-    <h4>{digest}</h4>
-    <Rate
-      handleRating={isLiked => event => {
-        if (isLiked) {
-          trackLiked(id)
-          console.log('like')
-        } else {
-          trackDisliked(id)
-          console.log('hate')
-        }
-      }}
-    />
-  </li>
-)
+const styles = theme => ({
+  root: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
+  },
+})
 
 const SearchResults = ({ hits, trackLiked, trackDisliked }) => {
   if (!hits) return null
   return (
-    <div className='results-container'>
-      <ul className='results-list'>
-        {hits.map((hit, i) => {
-          const {
-            _id,
-            _source: { title, content },
-          } = hit
-          return (
-            <ResultItem
-              key={_id}
+    <Grid item xs={12} container justify='space-around' alignItems='flex-start' spacing={32} style={{ marginTop: 8 }}>
+      {hits.map((hit, i) => {
+        const {
+          _id,
+          _source: { title, content },
+        } = hit
+        return (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={_id}>
+            <Card
               id={_id}
               title={title}
               digest={content.slice(0, 250) + '...'}
-              trackLiked={trackLiked}
-              trackDisliked={trackDisliked}
+              // trackLiked={trackLiked}
+              // trackDisliked={trackDisliked}
+              handleRating={isLiked => event => {
+                if (isLiked) {
+                  trackLiked(_id)
+                  console.log('like')
+                } else {
+                  trackDisliked(_id)
+                  console.log('hate')
+                }
+              }}
             />
-          )
-        })}
-      </ul>
-    </div>
+          </Grid>
+        )
+      })}
+    </Grid>
   )
 }
 
-export default SearchResults
+export default withStyles(styles)(SearchResults)
