@@ -1,14 +1,25 @@
 import sys
 
+<< << << < HEAD
+
 
 def feedback(query, liked, disliked, likedKwords, dislikedKwords):
-    '''
+
+
+== == == =
+
+
+def feedback(query, likedKwords, dislikedKwords):
+
+
+>>>>>> > c41df58fb14816a7543da967cc4ff6bdbe24ab69
+'''
 
     '''
-    terms = []
-    queryWords = query.split()
+ terms = []
+  queryWords = query.split()
 
-    for term in queryWords:
+   for term in queryWords:
         terms.append(term)
 
     titleTerms = []
@@ -41,6 +52,8 @@ def feedback(query, liked, disliked, likedKwords, dislikedKwords):
         if termVotes[term] > 0 or (termVotes[term] == 0 and term in queryWords):
             newQuery += term + ' '
 
+    print(newQuery)
+    sys.stdout.flush()
     if newQuery != '':
         newQuery = newQuery[0:len(newQuery)]
         return newQuery
@@ -51,3 +64,16 @@ def feedback(query, liked, disliked, likedKwords, dislikedKwords):
 print(sys.argv[1])
 print(sys.argv[2])
 print(sys.argv[3])
+
+args = sys.argv[1].split(',')
+print(args)
+
+query = args[0]
+
+print(args[1])
+likedKwords = args[1].replace("[", "").replace("]", "").split(',')
+
+dislikedKwords = args[2].replace("[", "").replace("]", "").split(',')
+
+print(likedKwords)
+feedback(query, likedKwords, dislikedKwords)
