@@ -55,7 +55,9 @@ print(args)
 query = args[0]
 
 print(args[1])
-likedKwords = args[1].replace("[","").replace("]","")
+likedKwords = args[1].replace("[","").replace("]","").split(',')
+
+dislikedKwords = args[2].replace("[","").replace("]","").split(',')
 
 print(likedKwords)
-feedback(query,likedKwords,args[2])
+feedback(query,likedKwords,dislikedKwords)
