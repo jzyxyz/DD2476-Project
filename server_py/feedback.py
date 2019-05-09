@@ -1,4 +1,6 @@
-def feedback(query,liked,disliked,likedKwords,dislikedKwords):
+import sys
+
+def feedback(query,likedKwords,dislikedKwords):
     '''
 
     '''
@@ -39,27 +41,21 @@ def feedback(query,liked,disliked,likedKwords,dislikedKwords):
         if termVotes[term] > 0 or (termVotes[term] == 0 and term in queryWords):
             newQuery += term + ' '
 
+    print(newQuery)
+    sys.stdout.flush()
     if newQuery != '':
         newQuery = newQuery[0:len(newQuery)]
         return newQuery
     else:
         return query
 
-query = "china news what the"
-likeTitle = ["what is new in china"]
-dislikeTitle = ["we hate the news"]
+args = sys.argv[1].split(',')
+print(args)
 
-likes = ["safgasgf"]
-dislikes = ["qewrwer"]
+query = args[0]
 
-newQuery = feedback(query,likes,dislikes,likeTitle,dislikeTitle)
-print(newQuery)
+print(args[1])
+likedKwords = args[1].replace("[","").replace("]","")
 
-
-    
-
-
-
-
-
-
+print(likedKwords)
+feedback(query,likedKwords,args[2])
