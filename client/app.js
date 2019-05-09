@@ -122,7 +122,9 @@ class App extends Component {
                     <Button
                       variant='contained'
                       color='primary'
-                      onClick={() => this.setState({ liked: [], disliked: [] })}
+                      onClick={() =>
+                        this.setState({ liked: [], disliked: [], liked_keywords: [], disliked_keywords: [] })
+                      }
                     >
                       <HistoryIcon /> {'clear tracking history'}
                     </Button>
