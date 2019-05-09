@@ -45,15 +45,39 @@ app.post('/api/search', (req, res) => {
   */
 
   // let newQuery = ''
-  const pyProcess = spawn('python3', [
-    path.resolve('./server_py/feedback.py'),
-    query,
-    liked_keywords.join('#'),
-    disliked_keywords.join('#'),
-  ])
+  if (liked_keywords.length > 0 || disliked_keywords.length > 0) {
+    const pyProcess = spawn('python3', [
+      path.resolve('./server_py/feedback.py'),
+      query,
+      liked_keywords.join('#'),
+      disliked_keywords.join('#'),
+    ])
 
-  pyProcess.stdout.on('data', data => {
-    console.log(data.toString())
+    pyProcess.on('error', error => {
+      console.log(error.stack)
+    })
+
+    pyProcess.stdout.on('data', data => {
+      console.log(data.toString())
+      const encoded = query.replace(' ', '%20')
+      fetch(`http://localhost:9200/news_1/_search?q=title:${encoded}`)
+        .then(queryRes => {
+          if (!queryRes.ok) {
+            return queryRes.json().then(({ error }) => {
+              throw Error(`${error}`)
+            })
+          }
+          return queryRes.json()
+        })
+        .then(queryResults => {
+          res.json(queryResults)
+        })
+        .catch(error => {
+          console.log(error.stack)
+          res.status(500).json({ error: { message: 'internal server error' } })
+        })
+    })
+  } else {
     const encoded = query.replace(' ', '%20')
     fetch(`http://localhost:9200/news_1/_search?q=title:${encoded}`)
       .then(queryRes => {
@@ -71,7 +95,7 @@ app.post('/api/search', (req, res) => {
         console.log(error.stack)
         res.status(500).json({ error: { message: 'internal server error' } })
       })
-  })
+  }
 
   // const encoded = newQuery.replace(' ', '%20')
 })
