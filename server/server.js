@@ -48,12 +48,12 @@ app.post('/api/search', (req, res) => {
   const pyProcess = spawn('python3', [
     path.resolve('./server_py/feedback.py'),
     query,
-    liked_keywords,
-    disliked_keywords,
+    liked_keywords.join('#'),
+    disliked_keywords.join('#'),
   ])
 
   pyProcess.stdout.on('data', data => {
-    console.log(data)
+    console.log(data.toString())
     const encoded = query.replace(' ', '%20')
     fetch(`http://localhost:9200/news_1/_search?q=title:${encoded}`)
       .then(queryRes => {

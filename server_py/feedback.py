@@ -1,4 +1,7 @@
-def feedback(query,liked,disliked,likedKwords,dislikedKwords):
+import sys
+
+
+def feedback(query, liked, disliked, likedKwords, dislikedKwords):
     '''
 
     '''
@@ -10,7 +13,6 @@ def feedback(query,liked,disliked,likedKwords,dislikedKwords):
 
     titleTerms = []
 
-
     for idx, title in enumerate(likedKwords):
         titleTerms.append(title.split())
         for term in titleTerms[idx]:
@@ -21,9 +23,9 @@ def feedback(query,liked,disliked,likedKwords,dislikedKwords):
         titleTerms.append(title.split())
         for term in titleTerms[idx+len(likedKwords)]:
             if term not in terms:
-                terms.append(term)    
+                terms.append(term)
     print(terms)
-    termVotes = dict((el,0) for el in terms) 
+    termVotes = dict((el, 0) for el in terms)
 
     for i in range(len(titleTerms)):
         if i < len(likedKwords):
@@ -32,7 +34,7 @@ def feedback(query,liked,disliked,likedKwords,dislikedKwords):
             vote = -1
         for term in titleTerms[i]:
             termVotes[term] += vote
-    
+
     newQuery = ''
 
     for term in terms:
@@ -45,21 +47,7 @@ def feedback(query,liked,disliked,likedKwords,dislikedKwords):
     else:
         return query
 
-query = "china news what the"
-likeTitle = ["what is new in china"]
-dislikeTitle = ["we hate the news"]
 
-likes = ["safgasgf"]
-dislikes = ["qewrwer"]
-
-newQuery = feedback(query,likes,dislikes,likeTitle,dislikeTitle)
-print(newQuery)
-
-
-    
-
-
-
-
-
-
+print(sys.argv[1])
+print(sys.argv[2])
+print(sys.argv[3])
