@@ -31,9 +31,12 @@ const styles = theme => ({
   content: {
     height: 125,
   },
+  fill: {
+    color: red[300],
+  },
 })
 
-const ResultCard = ({ classes, title, source, date, digest, handleRating, id }) => {
+const ResultCard = ({ classes, title, source, date, digest, handleRating, id, isliked }) => {
   return (
     <Card className={classes.card}>
       <CardHeader
@@ -55,7 +58,7 @@ const ResultCard = ({ classes, title, source, date, digest, handleRating, id }) 
       </CardContent>
       <CardActions className={classes.actions} disableActionSpacing>
         <IconButton onClick={handleRating(true)}>
-          <FavoriteIcon />
+          <FavoriteIcon className={isliked && classes.fill} />
         </IconButton>
         <IconButton onClick={handleRating(false)}>
           <DeleteIcon />

@@ -3,9 +3,13 @@ import cors from 'cors'
 import express from 'express'
 import bodyParser from 'body-parser'
 import path from 'path'
+import { spawn } from 'child_process'
 import fetch from 'node-fetch'
 
 SourceMapSupport.install()
+const PYDIR = path.join(__dirname, 'server_py')
+const PYPATH = path.join(PYDIR, 'feedback.py')
+
 const app = express()
 app.use(express.static('static'))
 app.use(bodyParser.json())
@@ -22,13 +26,21 @@ app.get('/api/test', (req, res) => {
 
 app.post('/api/search', (req, res) => {
   console.log(req.body)
-  const { query } = req.body
-  const encoded = query.replace(' ', '%20')
+  const { query, like, dislike } = req.body
 
   /*
   process the data from frontend here
   call python scripts here
   */
+
+  // let newQuery = ''
+  // const process = spawn('python3', [PYPATH, query, like, dislike])
+  // process.stdout.on('data', data => {
+  //   console.log(data)
+  //   newQuery = data
+  // })
+  // const encoded = newQuery.replace(' ', '%20')
+  const encoded = query.replace(' ', '%20')
 
   fetch(`http://localhost:9200/news_1/_search?q=title:${encoded}`)
     .then(queryRes => {

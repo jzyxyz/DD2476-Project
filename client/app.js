@@ -32,6 +32,8 @@ class App extends Component {
       query: '',
       loading: false,
       results: [],
+      liked_keywords: [],
+      disliked_keywords: [],
     }
     this.trackLiked = this.trackLiked.bind(this)
     this.trackDisliked = this.trackDisliked.bind(this)
@@ -46,11 +48,13 @@ class App extends Component {
   handleSearchAction(event) {
     if (event.key === 'Enter') {
       this.setState({ loading: true })
-      const { liked, disliked, query } = this.state
+      const { liked, disliked, query, liked_keywords, disliked_keywords } = this.state
       const body = {
         liked,
         disliked,
         query,
+        liked_keywords,
+        disliked_keywords,
       }
       fetch('http://localhost:3000/api/search', {
         method: 'POST',
@@ -70,16 +74,20 @@ class App extends Component {
     }
   }
 
-  trackLiked = docId => {
-    this.setState({ liked: this.state.liked.concat(docId) })
+  trackLiked = (docId, keywords) => {
+    this.setState({
+      liked: this.state.liked.concat(docId),
+      liked_keywords: this.state.liked_keywords.concat(keywords),
+    })
   }
 
-  trackDisliked = docId => {
+  trackDisliked = (docId, keywords) => {
     const hits = this.state.results.hits.slice()
     const filtered = hits.filter(h => h._id != docId)
     this.setState({
       disliked: this.state.disliked.concat(docId),
       results: { hits: filtered },
+      disliked_keywords: this.state.disliked_keywords.concat(keywords),
     })
   }
 
@@ -92,6 +100,7 @@ class App extends Component {
       query,
       loading,
       results: { hits },
+      liked,
     } = this.state
 
     return (
@@ -126,6 +135,7 @@ class App extends Component {
                       trackLiked={this.trackLiked}
                       trackDisliked={this.trackDisliked}
                       hits={hits}
+                      liked={liked}
                       toggleLoading={this.toggleLoading}
                     />
                   )}
