@@ -36,6 +36,7 @@
     "express": "^4.16.4",
     "lodash": "^4.17.11",
     "node-fetch": "^2.5.0",
+    "python-shell": "^1.0.7",
     "react-dom": "^16.8.1",
     "react-router-dom": "^5.0.0",
     "source-map-support": "^0.5.10",
