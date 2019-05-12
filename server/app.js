@@ -3,6 +3,12 @@ import cors from 'cors'
 import express from 'express'
 import bodyParser from 'body-parser'
 import path from 'path'
+import elasticsearch from 'elasticsearch'
+
+const client = new elasticsearch.Client({
+  host: 'localhost:9200',
+  log: 'trace',
+})
 
 SourceMapSupport.install()
 const app = express()
@@ -23,7 +29,7 @@ app.get('/api/test', (req, res) => {
       },
     })
     .then(queryRes => {
-      res.send(queryRes)
+      res.json(queryRes)
     })
 })
 

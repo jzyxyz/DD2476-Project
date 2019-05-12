@@ -48,19 +48,19 @@ def feedback(query, likedKwords, dislikedKwords):
             return query
 
 
-print(sys.argv[1])
-print(sys.argv[2])
+# print(sys.argv[1])
+# print(sys.argv[2])
 # print(sys.argv[3])
 
 # args = sys.argv[1].split(',')
 # print(args)
 
-# query = args[0]
+query = sys.argv[1]
 
 # print(args[1])
-# likedKwords = args[1].replace("[", "").replace("]", "").split(',')
+likedKwords = sys.argv[2].replace("[", "").replace("]", "").split('#')
 
-# dislikedKwords = args[2].replace("[", "").replace("]", "").split(',')
+dislikedKwords = sys.argv[3].replace("[", "").replace("]", "").split('#')
 
 # print(likedKwords)
-# feedback(query, likedKwords, dislikedKwords)
+print(feedback(query, likedKwords, dislikedKwords))
