@@ -7,7 +7,7 @@ import elasticsearch from 'elasticsearch'
 
 const client = new elasticsearch.Client({
   host: 'localhost:9200',
-  log: 'trace',
+  log: 'error',
 })
 
 SourceMapSupport.install()
@@ -31,6 +31,76 @@ app.get('/api/test', (req, res) => {
     .then(queryRes => {
       res.json(queryRes)
     })
+})
+
+const logStack = ({ stack }) => {
+  res.status(500).json({
+    error: {
+      message: 'internal server error',
+    },
+  })
+  console.log(stack)
+}
+
+app.post('/api/search', (req, res) => {
+  console.log(req.body)
+  const { query, liked_keywords, disliked_keywords } = req.body
+
+  if (liked_keywords.length === 0 && disliked_keywords.length === 0) {
+    // no traces yet
+    const encoded = query.replace(' ', '%20')
+    client
+      .search({
+        index: 'news_1',
+        body: {
+          query: {
+            match: {
+              content: encoded,
+            },
+          },
+        },
+      })
+      .then(queryRes => {
+        res.json(queryRes)
+      })
+      .catch(logStack)
+  } else {
+    const pyProcess = spawn('python3', [
+      path.resolve('./server_py/feedback.py'),
+      query,
+      liked_keywords.join('#'),
+      disliked_keywords.join('#'),
+    ])
+
+    pyProcess.on('error', error => {
+      console.log(error.stack)
+      res.status(500).json({
+        error: {
+          message: 'internal server error',
+        },
+      })
+    })
+
+    pyProcess.stdout.on('data', data => {
+      console.log(data.toString())
+      const encoded = query.replace(' ', '%20')
+      client
+        .search({
+          index: 'news_1',
+          body: {
+            query: {
+              match: {
+                content: encoded,
+              },
+            },
+          },
+        })
+        .then(queryRes => {
+          res.json(queryRes)
+        })
+        .catch(logStack)
+    })
+  }
 })
 
 app.get('*', (req, res) => {
