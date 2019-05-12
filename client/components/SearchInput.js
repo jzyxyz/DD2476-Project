@@ -11,6 +11,7 @@ const styles = theme => ({
   },
   resize: {
     fontSize: 'xx-large',
+    fontFamily: 'monospace',
   },
 })
 

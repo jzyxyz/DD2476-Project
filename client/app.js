@@ -7,9 +7,13 @@ import THEME from './styles/theme'
 import SearchResult from './components/SearchResults'
 import Loading from './components/Loading'
 import Grid from '@material-ui/core/Grid'
+import red from '@material-ui/core/colors/red'
 import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
 import HistoryIcon from '@material-ui/icons/History'
+import Chip from '@material-ui/core/Chip'
+import Avatar from '@material-ui/core/Avatar'
+import DeleteIcon from '@material-ui/icons/DeleteForever'
+import FavoriteIcon from '@material-ui/icons/Favorite'
 
 const responseHandler = response => {
   const { statusText, ok } = response
@@ -101,6 +105,7 @@ class App extends Component {
       loading,
       results: { hits },
       liked,
+      disliked,
     } = this.state
 
     return (
@@ -128,6 +133,29 @@ class App extends Component {
                     >
                       <HistoryIcon /> {'clear tracking history'}
                     </Button>
+                  </Grid>
+                  <Grid item xs={12} style={{ marginTop: 16 }}>
+                    <Chip
+                      color='primary'
+                      label={`You have liked ${liked.length} passages`}
+                      avatar={
+                        <Avatar>
+                          <FavoriteIcon />
+                        </Avatar>
+                      }
+                      variant='outlined'
+                    />
+                    <Chip
+                      style={{ marginLeft: 24 }}
+                      color='secondary'
+                      label={`You have liked ${disliked.length} passages`}
+                      avatar={
+                        <Avatar>
+                          <DeleteIcon />
+                        </Avatar>
+                      }
+                      variant='outlined'
+                    />
                   </Grid>
                   {loading ? (
                     <Loading />
