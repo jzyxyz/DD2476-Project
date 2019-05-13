@@ -5,7 +5,7 @@ const path = require('path')
 const DATA_DIR = path.resolve('../crawled_data')
 
 const writeData = json => {
-  filePath = path.join(DATA_DIR, `${json.title.replace(/\s+/g, '-')}.json`)
+  filePath = path.join(DATA_DIR, `${json.title.replace(/\s+/g, '-').replace(/[.*+?^${}()|[\]\\/<>":]/g, '-')}.json`)
   fs.writeFile(filePath, JSON.stringify(json), function(err) {
     if (err) {
       return console.log(err)
@@ -56,7 +56,7 @@ const c = new Crawler({
 	  else{
 	  	  
 		  // put the css-selector of title here
-		  const title = $('h1').text().replace(/[.*+?^${}()|[\]\\/<>":]/g, '-')
+		  const title = $('h1').text()
 		  //console.log(title)
 		  if (!title || /^\s+$/.test(title)) {
 			return null
