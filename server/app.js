@@ -4,6 +4,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import path from 'path'
 import elasticsearch from 'elasticsearch'
+import { spawn } from 'child_process'
 
 const client = new elasticsearch.Client({
   host: 'localhost:9200',
