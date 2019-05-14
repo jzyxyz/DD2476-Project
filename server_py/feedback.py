@@ -3,28 +3,29 @@ import sys
 
 
 
-def updateScores(queryWords,query_scores,terms,upvotes,downvotes,alpha,beta,gamma):
+def updateScores(queryWords,terms,upvotes,downvotes,alpha,beta,gamma):
 
     newQuery = []
-
-
+    query_scores = []
 
     for i in range(len(terms)):
         currTerm = terms[i]
         if (i>len(queryWords)):
-            query_scores.append(alpha*beta**upvotes[currTerm]*gamma**downvotes[currTerm])
+            score = beta**upvotes[currTerm]*gamma**downvotes[currTerm]
         else:
-            query_scores[i] = query_scores[i]*beta**upvotes[currTerm]*gamma**downvotes[currTerm])
-        newQuery.append(currTerm)
+            score = alpha*beta**upvotes[currTerm]*gamma**downvotes[currTerm]
+        if score > 1:
+            query_scores.append(score)
+            newQuery.append(currTerm)
 
     return newQuery,query_scores
 
 
 
 
-def feedback(query, query_scores, likedKwords, dislikedKwords):
+def feedback(query, likedKwords, dislikedKwords):
 
-    alpha = 1
+    alpha = 3
     beta = 1.1
     gamma = 0.9
 
@@ -41,13 +42,11 @@ def feedback(query, query_scores, likedKwords, dislikedKwords):
         for term in titleTerms[idx]:
             if term not in terms:
                 terms.append(term)
-    print(terms)
     for idx, title in enumerate(dislikedKwords):
         titleTerms.append(title.split())
         for term in titleTerms[idx+len(likedKwords)]:
             if term not in terms:
                 terms.append(term)
-    print(terms)
     upvotes = dict((el, 0) for el in terms)
     downvotes = dict((el, 0) for el in terms)
 
@@ -59,7 +58,7 @@ def feedback(query, query_scores, likedKwords, dislikedKwords):
                 downvotes[term] += 1
 
 
-    newQuery, newScores = updateScores(queryWords,query_scores,terms,upvotes,downvotes,alpha,beta,gamma)
+    newQuery, newScores = updateScores(queryWords,terms,upvotes,downvotes,alpha,beta,gamma)
 
     print(newQuery)
     print(newScores)
@@ -68,19 +67,8 @@ def feedback(query, query_scores, likedKwords, dislikedKwords):
     return newQuery, newScores
 
 
-print(sys.argv[1])
-print(sys.argv[2])
-# print(sys.argv[3])
+query = sys.argv[1]
+likedKwords = sys.argv[2][1:].split('#')
+dislikedKwords = sys.argv[3][1:].split('#')
 
-# args = sys.argv[1].split(',')
-# print(args)
-
-# query = args[0]
-
-# print(args[1])
-# likedKwords = args[1].replace("[", "").replace("]", "").split(',')
-
-# dislikedKwords = args[2].replace("[", "").replace("]", "").split(',')
-
-# print(likedKwords)
-# feedback(query, likedKwords, dislikedKwords)                                 
+feedback(query, likedKwords, dislikedKwords)
