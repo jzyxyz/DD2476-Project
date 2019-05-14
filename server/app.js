@@ -4,7 +4,9 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import path from 'path'
 import elasticsearch from 'elasticsearch'
+import _ from 'lodash'
 import { spawn } from 'child_process'
+import { boostQuery } from './update_query'
 
 const client = new elasticsearch.Client({
   host: 'localhost:9200',
@@ -42,7 +44,7 @@ const logStack = ({ stack }) => {
   })
   console.log(stack)
 }
-
+//130.229.182.213:3000/api/search
 app.post('/api/search', (req, res) => {
   console.log(req.body)
   const { query, liked_keywords, disliked_keywords, liked } = req.body
@@ -101,6 +103,7 @@ app.post('/api/search', (req, res) => {
         .then(queryRes => {
           // console.log(queryRes)
           queryRes.hits.hits = queryRes.hits.hits.filter(h => !liked.includes(h._id))
+          Object.assign(queryRes, { newQuery: data.toString() })
           res.json(queryRes)
         })
         .catch(logStack)

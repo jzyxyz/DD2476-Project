@@ -69,7 +69,8 @@ class App extends Component {
         body: JSON.stringify(body), // body data type must match "Content-Type" header
       })
         .then(responseHandler)
-        .then(({ hits }) => {
+        .then(({ hits, newQuery }) => {
+          console.log(newQuery)
           this.setState({ results: hits, loading: false })
         })
         .catch(error => {
@@ -96,7 +97,8 @@ class App extends Component {
       body: JSON.stringify(body), // body data type must match "Content-Type" header
     })
       .then(responseHandler)
-      .then(({ hits }) => {
+      .then(({ hits, newQuery }) => {
+        console.log(newQuery)
         this.setState({ results: hits, loading: false })
       })
       .catch(error => {
@@ -155,47 +157,55 @@ class App extends Component {
                       handleSearchAction={this.handleSearchAction}
                     />
                   </Grid>
-                  <Grid item xs={12} style={{ marginTop: 16 }}>
-                    <Button
-                      variant='contained'
-                      color='primary'
-                      onClick={() =>
-                        this.setState({ liked: [], disliked: [], liked_keywords: [], disliked_keywords: [] })
-                      }
-                    >
-                      <HistoryIcon /> {'clear tracking history'}
-                    </Button>
-                    <Button
-                      variant='contained'
-                      color='primary'
-                      style={{ marginLeft: 16 }}
-                      onClick={this.handleMoreNewsClick}
-                    >
-                      <AutorenewIcon /> {'more similiar news'}
-                    </Button>
+                  <Grid item container xs={12} style={{ marginTop: 16 }} justify='flex-start' spacing={Number(16)}>
+                    <Grid item xs={12} md={4}>
+                      <Button
+                        variant='contained'
+                        color='primary'
+                        onClick={() =>
+                          this.setState({ liked: [], disliked: [], liked_keywords: [], disliked_keywords: [] })
+                        }
+                        style={{ width: '100%' }}
+                      >
+                        <HistoryIcon /> {'clear tracking history'}
+                      </Button>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      <Button
+                        variant='contained'
+                        color='primary'
+                        onClick={this.handleMoreNewsClick}
+                        style={{ width: '100%' }}
+                      >
+                        <AutorenewIcon /> {'more similiar news'}
+                      </Button>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12} style={{ marginTop: 16 }}>
-                    <Chip
-                      color='primary'
-                      label={`You have liked ${liked.length} passages`}
-                      avatar={
-                        <Avatar>
-                          <FavoriteIcon />
-                        </Avatar>
-                      }
-                      variant='outlined'
-                    />
-                    <Chip
-                      style={{ marginLeft: 24 }}
-                      color='secondary'
-                      label={`You have liked ${disliked.length} passages`}
-                      avatar={
-                        <Avatar>
-                          <DeleteIcon />
-                        </Avatar>
-                      }
-                      variant='outlined'
-                    />
+                  <Grid item container xs={12} style={{ marginTop: 16 }} spacing={Number(16)}>
+                    <Grid item xs={6} md={4}>
+                      <Chip
+                        color='primary'
+                        label={`You have liked ${liked.length} passages`}
+                        avatar={
+                          <Avatar>
+                            <FavoriteIcon />
+                          </Avatar>
+                        }
+                        variant='outlined'
+                      />
+                    </Grid>
+                    <Grid item xs={6} md={4}>
+                      <Chip
+                        color='secondary'
+                        label={`You have liked ${disliked.length} passages`}
+                        avatar={
+                          <Avatar>
+                            <DeleteIcon />
+                          </Avatar>
+                        }
+                        variant='outlined'
+                      />
+                    </Grid>
                   </Grid>
                   {loading ? (
                     <Loading />
