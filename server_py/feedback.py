@@ -3,26 +3,30 @@ import sys
 
 
 
-def updateScores(queryWords,query_scores,terms,termVotes):
+def updateScores(queryWords,query_scores,terms,upvotes,downvotes,alpha,beta,gamma):
 
-    newQuery = ''
+    newQuery = []
+
 
 
     for i in range(len(terms)):
         currTerm = terms[i]
         if (i>len(queryWords)):
-            query_scores.append(1+0.1*termVotes[currTerm])
+            query_scores.append(alpha*beta**upvotes[currTerm]*gamma**downvotes[currTerm])
         else:
-            query_scores[i] += 0.1*termVotes[currTerm]
-        newQuery += currTerm + ' '
+            query_scores[i] = query_scores[i]*beta**upvotes[currTerm]*gamma**downvotes[currTerm])
+        newQuery.append(currTerm)
 
-    newQuery = newQuery[0:len(newQuery)]
     return newQuery,query_scores
 
 
 
 
 def feedback(query, query_scores, likedKwords, dislikedKwords):
+
+    alpha = 1
+    beta = 1.1
+    gamma = 0.9
 
     terms = []
     queryWords = query.split()
@@ -44,18 +48,18 @@ def feedback(query, query_scores, likedKwords, dislikedKwords):
             if term not in terms:
                 terms.append(term)
     print(terms)
-    termVotes = dict((el, 0) for el in terms)
+    upvotes = dict((el, 0) for el in terms)
+    downvotes = dict((el, 0) for el in terms)
 
     for i in range(len(titleTerms)):
-        if i < len(likedKwords):
-            vote = 1
-        else:
-            vote = -1
         for term in titleTerms[i]:
-            termVotes[term] += vote
+            if i < len(likedKwords):
+                upvotes[term] += 1
+            else:
+                downvotes[term] += 1
 
 
-    newQuery, newScores = updateScores(query,query_scores,terms,termVotes)
+    newQuery, newScores = updateScores(queryWords,query_scores,terms,upvotes,downvotes,alpha,beta,gamma)
 
     print(newQuery)
     print(newScores)
