@@ -20,30 +20,50 @@ app.use(bodyParser.json())
 app.use(cors())
 
 app.get('/api/test', (req, res) => {
-  client
-    .search({
-      index: 'news_1',
-      body: {
-        query: {
-          match: {
-            title: 'china',
-          },
-        },
+  const pyProcess = spawn('python3', [
+    path.resolve('./server_py/feedback.py'),
+    'Chinese government',
+    '#sweden',
+    'czech#Korea#Japan',
+  ])
+
+  pyProcess.on('error', error => {
+    console.log(error.stack)
+    res.status(500).json({
+      error: {
+        message: 'internal server error',
       },
     })
-    .then(queryRes => {
-      res.json(queryRes)
-    })
+  })
+
+  pyProcess.stdout.on('data', data => {
+    // console.log(data.toString())
+    const processed = JSON.parse(data.toString())
+    const { extended, score } = processed
+    console.log('TCL: extended', extended.join(','))
+    console.log('TCL:  score', score.join(','))
+    const elastic_body = boostQuery(extended, score)
+    console.log(elastic_body)
+    // res.json(elastic_body)
+    client
+      .search({
+        index: 'news_1',
+        body: elastic_body.body,
+      })
+      .then(queryRes => {
+        res.json(queryRes)
+      })
+      .catch(error => {
+        res.status(500).json({
+          error: {
+            message: 'internal server error',
+          },
+        })
+        console.log(error.stack)
+      })
+  })
 })
 
-const logStack = ({ stack }) => {
-  res.status(500).json({
-    error: {
-      message: 'internal server error',
-    },
-  })
-  console.log(stack)
-}
 //130.229.182.213:3000/api/search
 app.post('/api/search', (req, res) => {
   console.log(req.body)
@@ -67,7 +87,14 @@ app.post('/api/search', (req, res) => {
       .then(queryRes => {
         res.json(queryRes)
       })
-      .catch(logStack)
+      .catch(error => {
+        res.status(500).json({
+          error: {
+            message: 'internal server error',
+          },
+        })
+        console.log(error.stack)
+      })
   } else {
     const pyProcess = spawn('python3', [
       path.resolve('./server_py/feedback.py'),
@@ -86,19 +113,18 @@ app.post('/api/search', (req, res) => {
     })
 
     pyProcess.stdout.on('data', data => {
-      console.log(data.toString())
-      const encoded = query.replace(' ', '%20')
+      const processed = JSON.parse(data.toString())
+      const { extended, score } = processed
+      const formatted_score = score.map(s => s.toFixed(2))
+      console.log('TCL: extended', extended.join(','))
+      console.log('extended query lenght:', extended.length)
+      console.log('TCL:  score', formatted_score.join(', '))
+      const elastic_body = boostQuery(extended, formatted_score).body
+      // console.log('TCL:  elastic_body ', elastic_body)
       client
         .search({
           index: 'news_1',
-          body: {
-            query: {
-              match: {
-                content: encoded,
-              },
-            },
-            size: 30,
-          },
+          body: elastic_body,
         })
         .then(queryRes => {
           // console.log(queryRes)
@@ -106,7 +132,14 @@ app.post('/api/search', (req, res) => {
           Object.assign(queryRes, { newQuery: data.toString() })
           res.json(queryRes)
         })
-        .catch(logStack)
+        .catch(error => {
+          res.status(500).json({
+            error: {
+              message: 'internal server error',
+            },
+          })
+          console.log(error.stack)
+        })
     })
   }
 })

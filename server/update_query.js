@@ -1,11 +1,12 @@
 const template = {
-  index: 'news_1', // to change
+  // index: 'news_1', // to change
   body: {
     query: {
       bool: {
         should: [],
       },
     },
+    size: 30,
   },
 }
 

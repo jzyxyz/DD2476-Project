@@ -1,25 +1,22 @@
 import sys
+import json
 
 
-
-
-def updateScores(queryWords,terms,upvotes,downvotes,alpha,beta,gamma):
+def updateScores(queryWords, terms, upvotes, downvotes, alpha, beta, gamma):
 
     newQuery = []
     query_scores = []
 
     for i in range(len(terms)):
         currTerm = terms[i]
-        if (i>len(queryWords)):
+        if (i > len(queryWords)):
             score = beta**upvotes[currTerm]*gamma**downvotes[currTerm]
         else:
             score = alpha*beta**upvotes[currTerm]*gamma**downvotes[currTerm]
         query_scores.append(score)
         newQuery.append(currTerm)
 
-    return newQuery,query_scores
-
-
+    return newQuery, query_scores
 
 
 def feedback(query, likedKwords, dislikedKwords):
@@ -56,18 +53,23 @@ def feedback(query, likedKwords, dislikedKwords):
             else:
                 downvotes[term] += 1
 
+    newQuery, newScores = updateScores(
+        queryWords, terms, upvotes, downvotes, alpha, beta, gamma)
 
-    newQuery, newScores = updateScores(queryWords,terms,upvotes,downvotes,alpha,beta,gamma)
+    json_to_return = {}
+    json_to_return['extended'] = newQuery
+    json_to_return['score'] = newScores
 
-    print(newQuery)
-    print(newScores)
-    sys.stdout.flush()
+    print(json.dumps(json_to_return))
+    # print(newScores)
+    # sys.stdout.flush()
 
     return newQuery, newScores
 
 
 query = sys.argv[1]
-likedKwords = sys.argv[2][1:].split('#')
-dislikedKwords = sys.argv[3][1:].split('#')
+# print(query)
+likedKwords = sys.argv[2].split('#')
+dislikedKwords = sys.argv[3].split('#')
 
 feedback(query, likedKwords, dislikedKwords)
