@@ -1,3 +1,10 @@
+### TODO
+
+add labels to documents, imporve the query by adding / subtracting labels -- Mila
+implement the query imporvemnt algorithm - Gregory
+double quote for phrase, addition functions ui, synoym integration -- Zhongyuan
+new website for crawler -- Manon
+
 ### project structure
 
 .  
@@ -47,13 +54,9 @@ node index.js
 
 read the comments in `index.js` file
 
-
-
-
-### index the datasets 
+### index the datasets
 
 download the csv files from https://www.dropbox.com/s/90goxt56pfz0r35/all-the-news.zip?dl=0
-run indexing.py to create 3 indeces news_1, news_2 and news_3 
+run indexing.py to create 3 indeces news_1, news_2 and news_3
 
 visualization & simple query experiments : kibana or elasticsearch-head chrome extension
-

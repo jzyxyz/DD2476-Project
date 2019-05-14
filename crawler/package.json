@@ -9,6 +9,9 @@
   "author": "jzy",
   "license": "MIT",
   "dependencies": {
-    "crawler": "^1.2.1"
+    "cheerio": "^1.0.0-rc.3",
+    "crawler": "^1.2.1",
+    "jsdom": "^15.0.0",
+    "request": "^2.88.0"
   }
 }

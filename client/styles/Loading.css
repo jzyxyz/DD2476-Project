@@ -58,9 +58,3 @@
     transform: scale(1.2, 1);
   }
 }
-body,
-html {
-  background: #ccc;
-  overflow: hidden;
-  height: 100%;
-}
