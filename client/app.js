@@ -105,6 +105,9 @@ class App extends Component {
   }
 
   trackLiked = (docId, keywords) => {
+    if (this.state.liked.includes(docId)) {
+      return
+    }
     this.setState({
       liked: this.state.liked.concat(docId),
       liked_keywords: this.state.liked_keywords.concat(keywords),
@@ -112,6 +115,9 @@ class App extends Component {
   }
 
   trackDisliked = (docId, keywords) => {
+    if (this.state.disliked.includes(docId)) {
+      return
+    }
     const hits = this.state.results.hits.slice()
     const filtered = hits.filter(h => h._id != docId)
     this.setState({
