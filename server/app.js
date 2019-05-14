@@ -45,7 +45,7 @@ const logStack = ({ stack }) => {
 
 app.post('/api/search', (req, res) => {
   console.log(req.body)
-  const { query, liked_keywords, disliked_keywords } = req.body
+  const { query, liked_keywords, disliked_keywords, liked } = req.body
 
   if (liked_keywords.length === 0 && disliked_keywords.length === 0) {
     // no traces yet
@@ -59,6 +59,7 @@ app.post('/api/search', (req, res) => {
               content: encoded,
             },
           },
+          size: 16,
         },
       })
       .then(queryRes => {
@@ -94,9 +95,12 @@ app.post('/api/search', (req, res) => {
                 content: encoded,
               },
             },
+            size: 30,
           },
         })
         .then(queryRes => {
+          // console.log(queryRes)
+          queryRes.hits.hits = queryRes.hits.hits.filter(h => !liked.includes(h._id))
           res.json(queryRes)
         })
         .catch(logStack)
