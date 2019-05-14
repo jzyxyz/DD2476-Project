@@ -14,9 +14,8 @@ def updateScores(queryWords,terms,upvotes,downvotes,alpha,beta,gamma):
             score = beta**upvotes[currTerm]*gamma**downvotes[currTerm]
         else:
             score = alpha*beta**upvotes[currTerm]*gamma**downvotes[currTerm]
-        if score > 1:
-            query_scores.append(score)
-            newQuery.append(currTerm)
+        query_scores.append(score)
+        newQuery.append(currTerm)
 
     return newQuery,query_scores
 
