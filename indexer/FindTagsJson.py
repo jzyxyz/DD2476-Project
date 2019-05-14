@@ -25,13 +25,16 @@ def has_digit(string):
 
 def handle_title(title):
     tokens = nltk.word_tokenize(title.lower())
-    filtered = [token for token in tokens if not token in stop and not token in punct]
+    filtered = [token for token in tokens if not token in stop \
+                and not token in punct and not has_digit(token) \
+                and not "'" in token]
     return filtered
 
 def handle_content(content):
      tokens = nltk.word_tokenize(content.lower())
      filtered = [token for token in tokens if not token in stop \
-                 and not token in punct and not has_digit(token)]
+                and not token in punct and not has_digit(token) \
+                and not "'" in token]
      cnt = Counter(filtered)
      return [word for word,nr in cnt.most_common(10)]
  
