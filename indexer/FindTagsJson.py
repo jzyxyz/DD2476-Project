@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 import os
+import re
 import nltk
 import sys
 from nltk.corpus import stopwords
@@ -10,7 +11,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 stop = stopwords.words('english')
-stop.extend(["''", "´´", "``"])
+stop.extend(["''", "´´", "``", "’"])
 punct = string.punctuation
 global length
 title_matrix = list()
@@ -19,6 +20,9 @@ tags_matrix = list()
 
 all_content_words = Counter()
 
+def has_digit(string):
+    return bool(re.search(r'\d', string))
+
 def handle_title(title):
     tokens = nltk.word_tokenize(title.lower())
     filtered = [token for token in tokens if not token in stop and not token in punct]
@@ -26,7 +30,8 @@ def handle_title(title):
 
 def handle_content(content):
      tokens = nltk.word_tokenize(content.lower())
-     filtered = [token for token in tokens if not token in stop and not token in punct]
+     filtered = [token for token in tokens if not token in stop \
+                 and not token in punct and not has_digit(token)]
      cnt = Counter(filtered)
      return [word for word,nr in cnt.most_common(10)]
  
