@@ -16,7 +16,11 @@ dataset = []
 for data in glob.glob("../crawled_data/*.json") :
     print(data)
     with open(data, 'r', encoding = 'utf8') as f:
-        dataset.append(json.load(f))
+        try : 
+            dataset.append(json.load(f))
+        except : 
+            continue
+            
         #print(dataset[-1])
         try :
             dataset[-1]['date'] = datetime.strptime(
