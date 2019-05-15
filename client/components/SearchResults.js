@@ -30,12 +30,12 @@ const SearchResults = ({ hits, trackLiked, trackDisliked, liked }) => {
               digest={content.slice(0, 250) + '...'}
               handleRating={isLiked => event => {
                 if (isLiked) {
-                  trackLiked(_id, title)
+                  trackLiked(_id, tags)
                   console.log(tags)
                   console.log('like')
                 } else {
                   // TODO replace this `title` with `keywords`
-                  trackDisliked(_id, title)
+                  trackDisliked(_id, tags)
                   console.log(tags)
                   console.log('hate')
                 }
