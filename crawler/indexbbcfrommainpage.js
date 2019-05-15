@@ -12,8 +12,8 @@ const writeData = json => {
     }
     console.log(`${json.title} was saved!`)
 	
-	nb_file_saved += 1
-	console.log('nb of file saved : ', nb_file_saved)
+	nb_files_saved += 1
+	console.log('nb of file saved : ', nb_files_saved)
   })
 }
 
@@ -32,9 +32,7 @@ const c = new Crawler({
 	  if (first_call){
 		  $('div.gs-c-promo-body > div > a').each(function(i, el) {
 		  let href = this.attribs.href
-			if (!href || !/\/news\//g.test(href)) {
-			  return null
-			} else {
+			if (href && /\/news\//g.test(href)) {
 				if (!/https?/g.test(href)) {
 				   href = `https://www.bbc.com${href}`
 			    }
@@ -46,66 +44,80 @@ const c = new Crawler({
 				   c.queue(href)
 				}
 				else{
-				   nb_repetition += 1
-				   console.log('nb of repetitions : ', nb_repetition)
+				   nb_repetitions += 1
+				   console.log('nb of repetitions : ', nb_repetitions)
 				}
 			}
 		  })
 		  first_call = false
+		  done();
 	  }
 	  else{
+		  //console.log(href)
 	  	  
 		  // put the css-selector of title here
 		  const title = $('h1').text()
 		  //console.log(title)
 		  if (!title || /^\s+$/.test(title)) {
-			return null
+			console.log('title issue')
+			done();
 		  }
-		  
-		  const date = $('div.date').data('datetime')
-		  // console.log(date)
-
-		  // put the css-selector of new body paragraphs here
-		  const content = $('div.story-body__inner > p')
-			.map(function(i, el) {
-			  return $(this).text()
-			})
-			.get()
-			.join('\n')
-		  
-		  if (!content){
-			return null
-		  }
-		   // console.log(content)
-
-		  //put the css-selector of links to other news here
-		  $('a.story-body__link').each(function(i, el) {
-			let href = el.attribs.href
-			if (!href || !/\/news\//g.test(href)) {
-			  return null
-			} else {
-			  if (!/https?/g.test(href)) {
-				href = `https://www.bbc.com${href}`
-			  }
-			  // console.log(href)
-			  
-			  const key = hash(href)
-			  if (dict[key] == null){	
-				dict[key] = href
-				c.queue(href)
+		  else{  
+			  const date = $('div.date').data('datetime')
+			  if (!date){
+				console.log('date issue')
+				done();
 			  }
 			  else{
-				  nb_repetition += 1
-				  console.log('nb of repetitions : ', nb_repetition)
+
+				  // put the css-selector of new body paragraphs here
+				  const content = $('div.story-body__inner > p')
+					.map(function(i, el) {
+					  return $(this).text()
+					})
+					.get()
+					.join('\n')
+				  
+				  if (!content){
+					console.log('content issue')
+					done();
+				  }
+				  else{  
+				    // console.log(content)
+					added_to_queue = 0
+
+				  //put the css-selector of links to other news here
+				  $('a.story-body__link').each(function(i, el) {
+					let href = el.attribs.href
+					if (href && /\/news\//g.test(href)) {
+					  if (!/https?/g.test(href)) {
+						href = `https://www.bbc.com${href}`
+					  }
+					  // console.log(href)
+					  
+					  const key = hash(href)
+					  if (dict[key] == null){	
+						dict[key] = href
+						added_to_queue +=1
+						c.queue(href)
+					  }
+					  else{
+						  nb_repetitions += 1
+						  console.log('nb of repetitions : ', nb_repetitions)
+					  }
+					}
+				  })
+				  // console.log(JSON.stringify({ title, content, date, href }))
+				  console.log('added_to_queue : ', added_to_queue)
+				  const newsJSON = { title, content, date, href }
+				  done(writeData(newsJSON))
+				  console.log(c.queueSize)
+				}
 			  }
-			}
-		  })
-		  // console.log(JSON.stringify({ title, content, date, href }))
-		  const newsJSON = { title, content, date, href }
-		  done(writeData(newsJSON))
 		}
+	  }
 	}
-  },
+  }
 })
 
 c.on('drain', function() {
@@ -115,9 +127,11 @@ c.on('drain', function() {
 let hash = require('string-hash')
 
 var dict = new Object();
-var nb_repetition = 0
-var nb_file_saved = 0
+var nb_repetitions = 0
+var nb_files_saved = 0
 
 var first_call = true
+
+var added_to_queue = 0
 
 c.queue('https://www.bbc.com/news')
