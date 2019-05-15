@@ -47,7 +47,7 @@ app.get('/api/test', (req, res) => {
     // res.json(elastic_body)
     client
       .search({
-        index: 'news_1',
+        index: 'crawled_data',
         body: elastic_body.body,
       })
       .then(queryRes => {
@@ -74,7 +74,7 @@ app.post('/api/search', (req, res) => {
     const encoded = query.replace(' ', '%20')
     client
       .search({
-        index: 'news_1',
+        index: 'crawled_data',
         body: {
           query: {
             match: {
@@ -123,7 +123,7 @@ app.post('/api/search', (req, res) => {
       // console.log('TCL:  elastic_body ', elastic_body)
       client
         .search({
-          index: 'news_1',
+          index: 'crawled_data',
           body: elastic_body,
         })
         .then(queryRes => {
