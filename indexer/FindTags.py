@@ -5,8 +5,10 @@ import sys
 from nltk.corpus import stopwords
 from collections import Counter
 import string
-reload(sys)
-sys.setdefaultencoding('utf8')
+
+#nltk.download('stopwords')
+#nltk.download('punkt')
+
 
 def getContent(csv_file, row):
     data = pd.read_csv(csv_file)
@@ -47,7 +49,7 @@ def main():
         tags.append(tokens)
         all_common_words.update(token for token in tokens)
     
-    invalid_tags = str([word for word,count in all_common_words.iteritems() if count > 0.05*length])
+    invalid_tags = str([word for word,count in all_common_words.items() if count > 0.05*length])
     
     results = list()
     for j in range(length):

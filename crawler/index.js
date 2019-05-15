@@ -69,4 +69,4 @@ c.on('drain', function() {
 })
 
 // init with a news link
-c.queue('https://www.bbc.com/news/world-latin-america-48128846')
+c.queue('https://www.bbc.com/news/world-asia-india-47114401')

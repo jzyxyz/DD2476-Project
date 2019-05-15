@@ -18,7 +18,7 @@ const SearchResults = ({ hits, trackLiked, trackDisliked, liked }) => {
       {hits.map((hit, i) => {
         const {
           _id,
-          _source: { title, content },
+          _source: { title, content, tags },
         } = hit
         return (
           <Grid item xs={12} sm={6} md={4} lg={3} key={_id}>
@@ -31,10 +31,12 @@ const SearchResults = ({ hits, trackLiked, trackDisliked, liked }) => {
               handleRating={isLiked => event => {
                 if (isLiked) {
                   trackLiked(_id, title)
+                  console.log(tags)
                   console.log('like')
                 } else {
                   // TODO replace this `title` with `keywords`
                   trackDisliked(_id, title)
+                  console.log(tags)
                   console.log('hate')
                 }
               }}
