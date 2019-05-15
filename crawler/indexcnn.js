@@ -122,4 +122,4 @@ var nb_files_saved = 0
 var added_to_queue = 0
 
 // init with a news link
-c.queue('https://edition.cnn.com/2019/05/09/asia/china-trade-talks-trump-intl/index.html')
+c.queue('https://edition.cnn.com/2019/05/15/business/electric-car-outlook-bloomberg/index.html')

@@ -3,7 +3,6 @@ import json
 import os
 import re
 import nltk
-import sys
 from nltk.corpus import stopwords
 from collections import Counter
 import string
@@ -86,7 +85,7 @@ def main():
             data['tags'] = ' '.join(str(s) for s in list(tags_matrix[i]))
             i += 1
         file.close
-        with open("./" + directory + "/" + filename, "w") as outfile:  
+        with open("./" + directory + "/" + filename, "w", encoding = 'utf8') as outfile:  
             json.dump(data, outfile)
         outfile.close
     
