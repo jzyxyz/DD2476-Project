@@ -7,8 +7,6 @@ import sys
 from nltk.corpus import stopwords
 from collections import Counter
 import string
-reload(sys)
-sys.setdefaultencoding('utf8')
 
 stop = stopwords.words('english')
 stop.extend(["''", "´´", "``", "’"])
@@ -40,7 +38,7 @@ def handle_content(content):
  
 def find_bad_words():
     bad_words = list()
-    for word,nr in all_content_words.iteritems():
+    for word,nr in all_content_words.items():
         if nr > length*0.1:
             bad_words.append(word)
     return bad_words
@@ -62,8 +60,12 @@ def main():
     global length
     length = len(os.listdir(directory))
     for filename in os.listdir(directory):
-            with open("./" + directory + "/" + filename) as file:  
-                data = json.load(file)
+            with open("./" + directory + "/" + filename, encoding = 'utf8') as file:  
+                try : 
+                    data = json.load(file)
+                except :
+                    length = length - 1
+                    continue
                 title = data['title']
                 title_matrix.append(handle_title(title))
                 content = data['content']
@@ -78,16 +80,17 @@ def main():
 
     i = 0
     for filename in os.listdir(directory):
-        with open("./" + directory + "/" + filename) as file:  
-            data = json.load(file)
+        with open("./" + directory + "/" + filename, encoding = 'utf8') as file:  
+            try :
+               data = json.load(file)
+            except :
+                continue
             data['tags'] = ' '.join(str(s) for s in list(tags_matrix[i]))
             i += 1
         file.close
-        with open("./" + directory + "/" + filename, "w") as outfile:  
+        with open("./" + directory + "/" + filename, "w", encoding = 'utf8') as outfile:  
             json.dump(data, outfile)
         outfile.close
     
 if __name__== "__main__":
   main()
-
-    
