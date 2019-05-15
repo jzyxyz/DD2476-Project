@@ -7,12 +7,9 @@ import sys
 from nltk.corpus import stopwords
 from collections import Counter
 import string
-<<<<<<< HEAD
 import time
-=======
 reload(sys)
 sys.setdefaultencoding('utf8')
->>>>>>> b90e1692998f5a236cc175bbad8429fcf3f07906
 
 stop = stopwords.words('english')
 stop.extend(["''", "´´", "``", "’", "‘"])
@@ -92,13 +89,7 @@ def main():
         outfile.close
     
 if __name__== "__main__":
-<<<<<<< HEAD
   start = time.time()
   main()
   fin = time.time()
   print('duree : ', fin - start)
-=======
-  main()
-
-    
->>>>>>> b90e1692998f5a236cc175bbad8429fcf3f07906
