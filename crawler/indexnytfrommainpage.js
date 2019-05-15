@@ -32,9 +32,7 @@ const c = new Crawler({
 	   if (first_call){
 		  $('a').each(function(i, el) {
 		  let href = this.attribs.href
-			if (!href || !/^\/20/g.test(href)) {
-			  return null
-			} else {
+			if (href && /^\/20/g.test(href)) {
 				href = `https://www.nytimes.com${href}`
 				//console.log(href)
 				  
@@ -50,9 +48,9 @@ const c = new Crawler({
 			}
 		  })
 		  first_call = false
+		  done();
 	  }
-	  else{
-	  
+	  else{ 
 		  //console.log('link of the file we are indexing :', href)
 		  
 		  // put the css-selector of title here	  
@@ -61,84 +59,85 @@ const c = new Crawler({
 		  
 		  if (!title || /^\s+$/.test(title)) {
 			console.log('invalid title')
-			console.log(c.queueSize)
-			return null
+			done();
 		  }
-		  
-		  //const date = $('time').text() 
-		  var date = $('div.css-acwcvw.epjyd6m0 > ul.css-1w5cs23.epjyd6m2 > li:nth-child(1) > time').text()
-			if (!date){
-				var date = $('time.dateline').text()
+		  else{
+			  //const date = $('time').text() 
+			  var date = $('div.css-acwcvw.epjyd6m0 > ul.css-1w5cs23.epjyd6m2 > li:nth-child(1) > time').text()
+				if (!date){
+					var date = $('time.dateline').text()
+				}
 				if (!date){
 					var date = $('time.elhp5ji0.css-17kdze.e16638kd0').text()
-					if (!date){
-						console.log('date issue')
-						console.log(href)
-						console.log(c.queueSize)
-						return null
+				}
+				if (!date){
+					console.log('date issue')
+					done();
+				}
+				else{
+					//console.log(date)			
+	
+				  // put the css-selector of new body paragraphs here
+				  var content = $('#story > section > div > div > p') 
+					.map(function(i, el) {
+					  return $(this).text()
+					})
+					.get()
+					.join('\n')
+					
+				  if (!content){			
+					var content = $('p.story-body-text.story-content') 
+					.map(function(i, el) {
+					  return $(this).text()
+					})
+					.get()
+					.join('\n')
+				  }	
+					
+					if (!content){
+						console.log('content issue')
+						done()
+					}
+					else{
+					  //console.log(content)
+					  added_to_queue = 0
+					  
+						
+					  //put the css-selector of links to other news here
+					  $('a').each(function(i, el) {
+						let href = el.attribs.href
+						if (href && /^https?:\/\/www.nytimes.com\/20/g.test(href)) {
+						  if (href.indexOf('.html') ==  -1){
+							console.log(href)
+							console.log('.html missing')
+						  }
+						  else{
+							  const idx = href.indexOf('.html')
+							  href = href.substring(0, idx + 5)
+							  //console.log(href)
+						  }
+						  
+						  const key = hash(href)
+						  if (dict[key] == null){
+							dict[key] = href
+							added_to_queue += 1
+							c.queue(href)
+							//console.log(href)
+						  }
+						  else{
+							  nb_repetitions += 1
+							  console.log('nb of repetitions : ', nb_repetitions)
+						  }
+						}
+					  })
+					  console.log('added_to_queue : ', added_to_queue)
+					  const newsJSON = { title, content, date, href }
+					  done(writeData(newsJSON))
+					  console.log(c.queueSize)
 					}
 				}
-			}
-		  //console.log(date)	
-
-			
-		  // put the css-selector of new body paragraphs here
-		  var content = $('#story > section > div > div > p') 
-			.map(function(i, el) {
-			  return $(this).text()
-			})
-			.get()
-			.join('\n')
-			
-		  if (!content){
-		
-			var content = $('p.story-body-text.story-content') 
-			.map(function(i, el) {
-			  return $(this).text()
-			})
-			.get()
-			.join('\n')
-			
-			if (!content){
-				console.log('content issue')
-				console.log(c.queueSize)
-				return null
-			}
 		  }
-		  //console.log(content)	
-			
-		  //put the css-selector of links to other news here
-		  $('a').each(function(i, el) {
-			let href = el.attribs.href
-			if (!href || !/^https?:\/\/www.nytimes.com\/20/g.test(href)) {
-			  return null
-			} else {
-			
-			  if (href.indexOf('.html') ==  -1){
-				console.log(href)
-				console.log('.html missing')
-			  }
-			  else{
-				  const idx = href.indexOf('.html')
-				  href = href.substring(0, idx + 5)
-				  //console.log(href)
-			  }
-			  
-			  const key = hash(href)
-			  if (dict[key] == null){
-				dict[key] = href
-				c.queue(href)
-				//console.log(href)
-			  }
-			  else{
-				  nb_repetitions += 1
-				  console.log('nb of repetitions : ', nb_repetitions)
-			  }
-			}
-		  })
-		  const newsJSON = { title, content, date, href }
-		  done(writeData(newsJSON))
-		}
+	  }
 	}
   },
 })
