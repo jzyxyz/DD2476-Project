@@ -217,6 +217,7 @@ class App extends Component {
                       trackDisliked={this.trackDisliked}
                       hits={hits}
                       liked={liked}
+                      disliked={disliked}
                       toggleLoading={this.toggleLoading}
                     />
                   )}

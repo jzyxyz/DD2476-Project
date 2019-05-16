@@ -21,7 +21,7 @@ def updateScores(queryWords, terms, upvotes, downvotes, alpha, beta, gamma):
 
 def feedback(query, likedKwords, dislikedKwords):
 
-    alpha = 3
+    alpha = 1.5
     beta = 1.1
     gamma = 0.9
 
