@@ -21,7 +21,9 @@ const ViewPage = props => {
         <ArrowBackIcon />
       </IconButton>
       <Paper className={classes.root}>
-        <Typography component='p'>{props.hit._source.content}</Typography>
+        <Typography component='p' style={{ fontSize: 'large' }}>
+          {props.hit._source.content}
+        </Typography>
       </Paper>
     </div>
   )

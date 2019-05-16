@@ -1,62 +1,65 @@
-### TODO
+# News Reccomendation System With Elastic Search.
 
-add labels to documents, imporve the query by adding / subtracting labels -- Mila
-implement the query imporvemnt algorithm - Gregory
-double quote for phrase, addition functions ui, synoym integration -- Zhongyuan
-new website for crawler -- Manon
+This is the course project for course DD2476 at KTH.
 
-### project structure
+Group members:  
+Deprette, Manon deprette@kth.se  
+Grancharova, Mila milag@kth.se  
+Iakovidis, Grigorios griiak@kth.se  
+Jin, Zhongyuan zjin@kth.se
+
+## project structure
 
 .  
-├── client  
-├── crawled_data  
-├── crawler  
-├── data  
-├── dist  
-├── indexer  
-├── node_modules  
-└── server
+├── client `frontend source code`  
+├── crawler `tools for crawling data from web`  
+├── indexer `tools for creating elastic index`  
+├── nodemon.json  
+├── package.json  
+├── package-lock.json  
+├── README.md  
+├── requirements.txt  
+├── server `backend source code`  
+├── server_py `backend server scripts`  
+├── tagged_data `tagged news data`  
+├── webpack.config.js  
+└── webpack.config.server.js
 
-### adding dependencies
+## build the project
 
-if you add any dependecies in python, write it in `requirements.txt`.  
-if you add any dependecies in nodejs, use `npm install --save $packagename`.  
-this makes everyone's life easier
+1. clone the project
+2. install the dependencies
+
+```bash
+    npm run install
+    pip3 install -r requirements.txt
+```
+
+> make sure you have at least `npm @v5 node @v10`
+
+3. create elastic search index
+   ```bash
+   cd indexer
+   python3 indexing_crawled_data.py
+   ```
+4. build the server and client
+   ```bash
+   npm run build
+   npm run server
+   ```
+5. Server starts at localhost:3000
+6. crawls more data?
+
+   ```bash
+   cd crawler
+   npm install
+
+   node index.js
+   ```
 
 ### installing dependencies
 
-to install dependencies, run
-`npm install`
-or
+to install dependencies, run  
+`npm install`  
+or  
 `pip3 install -r requirements.txt`
-
-### frontend
-
-clone the repository and run
-npm @v5
-node @v10
-
-and then run
-
-```bash
-npm run client
-```
-
-webpack devServer @port 8888
-
-### crawl the data
-
-```bash
-cd crawler
-npm install
-node index.js
-```
-
-read the comments in `index.js` file
-
-### index the datasets
-
-download the csv files from https://www.dropbox.com/s/90goxt56pfz0r35/all-the-news.zip?dl=0
-run indexing.py to create 3 indeces news_1, news_2 and news_3
-
-visualization & simple query experiments : kibana or elasticsearch-head chrome extension

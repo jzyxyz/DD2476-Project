@@ -67,7 +67,7 @@ app.get('/api/test', (req, res) => {
 //130.229.182.213:3000/api/search
 app.post('/api/search', (req, res) => {
   console.log(req.body)
-  const { query, liked_keywords, disliked_keywords, liked } = req.body
+  const { query, liked_keywords, disliked_keywords, liked, disliked } = req.body
 
   if (liked_keywords.length === 0 && disliked_keywords.length === 0) {
     // no traces yet
@@ -116,11 +116,11 @@ app.post('/api/search', (req, res) => {
       const processed = JSON.parse(data.toString())
       const { extended, score } = processed
       const formatted_score = score.map(s => s.toFixed(2))
-      console.log('TCL: extended', extended.join(','))
-      console.log('extended query lenght:', extended.length)
-      console.log('TCL:  score', formatted_score.join(', '))
+      // console.log('TCL: extended', extended.join(','))
+      // console.log('extended query lenght:', extended.length)
+      // console.log('TCL:  score', formatted_score.join(', '))
       const elastic_body = boostQuery(extended, formatted_score).body
-      // console.log('TCL:  elastic_body ', elastic_body)
+      console.log('TCL:  elastic_body ', JSON.stringify(elastic_body))
       client
         .search({
           index: 'crawled_data',
@@ -128,7 +128,14 @@ app.post('/api/search', (req, res) => {
         })
         .then(queryRes => {
           // console.log(queryRes)
-          queryRes.hits.hits = queryRes.hits.hits.filter(h => !liked.includes(h._id))
+          queryRes.hits.hits = queryRes.hits.hits
+            .filter(h => !liked.includes(h._id))
+            .filter(h => !disliked.includes(h._id))
+          console.log(queryRes.hits.hits.length)
+          if (queryRes.hits.hits.length > 30) {
+            queryRes.hits.hits = queryRes.hits.hits.slice(0, 24)
+            console.log(queryRes.hits.hits.length)
+          }
           Object.assign(queryRes, { newQuery: data.toString() })
           res.json(queryRes)
         })

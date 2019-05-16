@@ -6,7 +6,7 @@ const template = {
         should: [],
       },
     },
-    size: 30,
+    size: 100,
   },
 }
 
