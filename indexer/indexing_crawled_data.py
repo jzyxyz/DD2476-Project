@@ -12,6 +12,8 @@ start = time.time()
 dataset = []
 # print(glob.glob("../crawled_data/*.json"))
 
+es.indices.delete(index = 'crawled_data')
+
 for data in glob.glob("../tagged_data/*.json"):
     # print(data)
     with open(data, 'r', encoding='utf8') as f:
