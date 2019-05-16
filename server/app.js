@@ -81,10 +81,11 @@ app.post('/api/search', (req, res) => {
               content: encoded,
             },
           },
-          size: 16,
+          size: 30,
         },
       })
       .then(queryRes => {
+        Object.assign(queryRes, { newQuery: 'init' })
         res.json(queryRes)
       })
       .catch(error => {
@@ -115,6 +116,11 @@ app.post('/api/search', (req, res) => {
     pyProcess.stdout.on('data', data => {
       const processed = JSON.parse(data.toString())
       const { extended, score } = processed
+      const clientRes = extended.map((tk, i) => ({
+        word: tk,
+        score: score[i],
+      }))
+      // console.log(clientRes)
       const formatted_score = score.map(s => s.toFixed(2))
       // console.log('TCL: extended', extended.join(','))
       // console.log('extended query lenght:', extended.length)
@@ -136,7 +142,7 @@ app.post('/api/search', (req, res) => {
             queryRes.hits.hits = queryRes.hits.hits.slice(0, 24)
             console.log(queryRes.hits.hits.length)
           }
-          Object.assign(queryRes, { newQuery: data.toString() })
+          Object.assign(queryRes, { newQuery: clientRes })
           res.json(queryRes)
         })
         .catch(error => {
