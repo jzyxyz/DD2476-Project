@@ -61,7 +61,7 @@ class App extends Component {
         liked_keywords,
         disliked_keywords,
       }
-      fetch('http://localhost:3000/api/search', {
+      fetch('http://192.168.137.49:3000/api/search', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ class App extends Component {
       liked_keywords,
       disliked_keywords,
     }
-    fetch('http://localhost:3000/api/search', {
+    fetch('http://192.168.137.49:3000/api/search', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -158,7 +158,18 @@ class App extends Component {
                     />
                   </Grid>
                   <Grid item container xs={12} style={{ marginTop: 16 }} justify='flex-start' spacing={Number(16)}>
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12} sm={6} md={4}>
+                      <Button
+                        variant='contained'
+                        color='primary'
+                        onClick={this.handleMoreNewsClick}
+                        style={{ width: '100%' }}
+                      >
+                        <AutorenewIcon />{' '}
+                        {liked.length == 0 && disliked.length == 0 ? 'search for news' : 'more similiar news'}
+                      </Button>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4}>
                       <Button
                         variant='contained'
                         color='primary'
@@ -170,19 +181,9 @@ class App extends Component {
                         <HistoryIcon /> {'clear tracking history'}
                       </Button>
                     </Grid>
-                    <Grid item xs={12} md={4}>
-                      <Button
-                        variant='contained'
-                        color='primary'
-                        onClick={this.handleMoreNewsClick}
-                        style={{ width: '100%' }}
-                      >
-                        <AutorenewIcon /> {'more similiar news'}
-                      </Button>
-                    </Grid>
                   </Grid>
                   <Grid item container xs={12} style={{ marginTop: 16 }} spacing={Number(16)}>
-                    <Grid item xs={6} md={4}>
+                    <Grid item xs={12} md={4}>
                       <Chip
                         color='primary'
                         label={`You have liked ${liked.length} passages`}
@@ -194,10 +195,10 @@ class App extends Component {
                         variant='outlined'
                       />
                     </Grid>
-                    <Grid item xs={6} md={4}>
+                    <Grid item xs={12} md={4}>
                       <Chip
                         color='secondary'
-                        label={`You have liked ${disliked.length} passages`}
+                        label={`You have disliked ${disliked.length} passages`}
                         avatar={
                           <Avatar>
                             <DeleteIcon />
