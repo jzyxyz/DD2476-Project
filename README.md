@@ -56,10 +56,3 @@ Jin, Zhongyuan zjin@kth.se
 
    node index.js
    ```
-
-### installing dependencies
-
-to install dependencies, run  
-`npm install`  
-or  
-`pip3 install -r requirements.txt`
