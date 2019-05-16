@@ -25,6 +25,8 @@ Jin, Zhongyuan zjin@kth.se
 ├── webpack.config.js  
 └── webpack.config.server.js
 
+![Overview](./client/overview.png)
+
 ## build the project
 
 1. clone the project
@@ -47,7 +49,9 @@ Jin, Zhongyuan zjin@kth.se
    npm run build
    npm run server
    ```
-5. Server starts at localhost:3000
+5. Server starts at localhost:3000  
+   ![Screenshot](./client/example.png)
+
 6. crawls more data?
 
    ```bash
