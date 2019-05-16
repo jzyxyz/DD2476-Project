@@ -52,6 +52,9 @@ const styles = theme => ({
   U: {
     backgroundColor: deepPurple[300],
   },
+  H: {
+    backgroundColor: red[300],
+  },
   title: {
     position: 'absolute',
     top: '50%',
