@@ -8,9 +8,13 @@ import Avatar from '@material-ui/core/Avatar'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import red from '@material-ui/core/colors/red'
+import orange from '@material-ui/core/colors/orange'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import DeleteIcon from '@material-ui/icons/DeleteForever'
 import { Link } from 'react-router-dom'
+import teal from '@material-ui/core/colors/teal'
+import deepPurple from '@material-ui/core/colors/deepPurple'
+import classnames from 'classnames'
 
 const styles = theme => ({
   card: {
@@ -18,7 +22,6 @@ const styles = theme => ({
   },
   media: {
     // height: 0,
-    backgroundColor: red[300],
     padding: '28.25% 0px',
     position: 'relative',
     textAlign: 'center',
@@ -37,6 +40,21 @@ const styles = theme => ({
   fill: {
     color: red[300],
   },
+  B: {
+    backgroundColor: red[300],
+  },
+  N: {
+    backgroundColor: orange[300],
+  },
+  C: {
+    backgroundColor: teal[300],
+  },
+  U: {
+    backgroundColor: deepPurple[300],
+  },
+  H: {
+    backgroundColor: red[300],
+  },
   title: {
     position: 'absolute',
     top: '50%',
@@ -51,24 +69,25 @@ const styles = theme => ({
   },
 })
 
-const ResultCard = ({ classes, title, source, date, digest, handleRating, id, isliked }) => {
+const ResultCard = ({ classes, title, href, date, digest, handleRating, id, isliked }) => {
   const isFilled = isliked ? classes.fill : ''
+  const source = /(\w+)\.com?/.exec(href) ? /(\w+)\.com?/.exec(href)[1] : 'Unknown'
 
   return (
     <Card className={classes.card}>
       <CardHeader
         avatar={
-          <Avatar className={classes.avatar}>
+          <Avatar className={classes[source[0].toUpperCase()]}>
             {/* //TODO change this according to category */}
-            {'P'}
+            {source[0].toUpperCase()}
           </Avatar>
         }
-        title={'The New York Times'} //source
-        subheader={new Date().toDateString()}
+        title={source} //source
+        subheader={date}
       />
       <Link to={`/news/${id}`}>
         {/* <CardMedia className={classes.media} /> */}
-        <div className={classes.media}>
+        <div className={classnames(classes.media, classes[source[0].toUpperCase()])}>
           <h3 className={classes.title}>{title}</h3>
         </div>
       </Link>

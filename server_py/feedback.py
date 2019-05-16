@@ -9,7 +9,7 @@ def updateScores(queryWords, terms, upvotes, downvotes, alpha, beta, gamma):
 
     for i in range(len(terms)):
         currTerm = terms[i]
-        if (i > len(queryWords)):
+        if (i >= len(queryWords)):
             score = beta**upvotes[currTerm]*gamma**downvotes[currTerm]
         else:
             score = alpha*beta**upvotes[currTerm]*gamma**downvotes[currTerm]
